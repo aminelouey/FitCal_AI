@@ -1,3 +1,4 @@
+import 'package:fitcal_ai/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/home_screen.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         Locale('en', ''),
       ],
       locale: const Locale('ar', ''),
-      home: const MainScreen(),
+      home: const LoginScreen(),
     );
   }
 }
@@ -78,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
                     Icons.home,
                     color: _selectedIndex == 0
                         ? const Color(0xFF4CAF50)
-                        : Colors.grey[600],
+                        : Colors.black,
                   ),
                   onPressed: () {
                     setState(() {
@@ -95,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.analytics,
                       color: _selectedIndex == 1
                           ? const Color(0xFF4CAF50)
-                          : Colors.grey[600],
+                          : Colors.black,
                     ),
                     onPressed: () {
                       setState(() {
@@ -114,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.calendar_today,
                       color: _selectedIndex == 3
                           ? const Color(0xFF4CAF50)
-                          : Colors.grey[600],
+                          : Colors.black,
                     ),
                     onPressed: () {
                       setState(() {
@@ -133,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
                       Icons.person,
                       color: _selectedIndex == 4
                           ? const Color(0xFF4CAF50)
-                          : Colors.grey[600],
+                          : Colors.black,
                     ),
                     onPressed: () {
                       setState(() {
