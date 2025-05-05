@@ -34,7 +34,7 @@ class AnalysisScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 95),
               Container(
                 width: 40,
                 height: 40,

@@ -1,3 +1,4 @@
+import 'package:fitcal_ai/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/meal_card.dart';
 
@@ -10,11 +11,12 @@ class DailyJournalScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(right: 16.0, left: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _buildHeader(),
+                const SizedBox(height: 4),
+                _buildHeader(context),
                 const SizedBox(height: 16),
                 _buildDateSelector(),
                 const SizedBox(height: 24),
@@ -36,33 +38,40 @@ class DailyJournalScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        IconButton(
-          icon: const Icon(Icons.filter_list),
-          onPressed: () {},
+        const SizedBox(width: 102),
+        const Text(
+          'يومياتي',
+          style: TextStyle(
+            color: Color(0xFF4CAF50),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        Row(
-          children: [
-            const Text(
-              'يومياتي',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                color: Color(0xFF4CAF50),
+        const SizedBox(width: 70),
+        IconButton(
+          icon: CircleAvatar(
+            radius: 24,
+            backgroundImage: const AssetImage('assets/images/img2.jpg'),
+            child: Container(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
+                ),
               ),
             ),
-          ],
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          },
         ),
       ],
     );

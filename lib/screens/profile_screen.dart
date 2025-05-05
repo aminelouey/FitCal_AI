@@ -1,5 +1,4 @@
 import 'package:fitcal_ai/screens/home_screen.dart';
-import 'package:fitcal_ai/screens/paramettre.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -15,9 +14,9 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const SizedBox(height: 7),
+                const SizedBox(height: 15),
                 _buildHeader(context),
-                const SizedBox(height: 24),
+                const SizedBox(height: 30),
                 _buildProfileInfo(),
                 const SizedBox(height: 24),
                 _buildStatsSection(),
@@ -33,29 +32,18 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-          icon: const Icon(Icons.settings_outlined),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ParamettreScreen()),
-            );
-          },
+        const SizedBox(width: 115),
+        const Text(
+          'الملف الشخصي',
+          style: TextStyle(
+            fontSize: 20,
+            color: Color(0xFF4CAF50),
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const Row(
-          children: [
-            const Text(
-              'الملف الشخصي',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 115),
-          ],
-        ),
+        const SizedBox(width: 115),
       ],
     );
   }

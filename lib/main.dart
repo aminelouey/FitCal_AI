@@ -66,39 +66,92 @@ class _MainScreenState extends State<MainScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         body: _screens[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Colors.grey,
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'الرئيسية',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.analytics),
-              label: 'التحليل',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.camera_alt, color: Color(0xFF4CAF50)),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: 'اليوميات',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'حسابي',
-            ),
-          ],
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(mainAxisSize: MainAxisSize.min, children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.home,
+                    color: _selectedIndex == 0
+                        ? const Color(0xFF4CAF50)
+                        : Colors.grey[600],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _selectedIndex = 0;
+                    });
+                  },
+                ),
+              ]),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.analytics,
+                      color: _selectedIndex == 1
+                          ? const Color(0xFF4CAF50)
+                          : Colors.grey[600],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 1;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(width: 48), // Espace pour le bouton flottant
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.calendar_today,
+                      color: _selectedIndex == 3
+                          ? const Color(0xFF4CAF50)
+                          : Colors.grey[600],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 3;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.person,
+                      color: _selectedIndex == 4
+                          ? const Color(0xFF4CAF50)
+                          : Colors.grey[600],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 4;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
+        floatingActionButton: const FloatingActionButton(
+          onPressed: null, // Ne fait rien
+          backgroundColor: Color(0xFF4CAF50),
+          child: Icon(Icons.camera_alt, color: Colors.white),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

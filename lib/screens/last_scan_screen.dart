@@ -12,7 +12,7 @@ class LastScanScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _buildImageSection(),
+              _buildImageSection(context),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -35,7 +35,7 @@ class LastScanScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildImageSection() {
+  Widget _buildImageSection(BuildContext context) {
     return Stack(
       children: [
         Image.asset(
@@ -54,7 +54,9 @@ class LastScanScreen extends StatelessWidget {
             ),
             child: IconButton(
               icon: const Icon(Icons.close, color: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
         ),

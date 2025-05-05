@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../widgets/macro_progress_bar.dart';
 import '../widgets/macro_info_card.dart';
 import 'last_scan_screen.dart';
-import 'paramettre.dart';
 import 'profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,15 +38,6 @@ class HomeScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ParamettreScreen()),
-              );
-            },
-            icon: const Icon(Icons.settings)),
         const SizedBox(width: 75),
         const Text(
           'FitCal AI',
@@ -258,20 +248,66 @@ class HomeScreen extends StatelessWidget {
             );
           },
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/img1.jpg',
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[300]!),
               ),
-            ),
-          ),
+              height: 300,
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        'assets/images/img1.jpg',
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Align(
+                    alignment: Alignment.topRight,
+                    child: const Text(
+                      ' سلطة الدجاج المشوي',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.topRight,
+                    child: Row(
+                      children: [
+                        Text(
+                          "السعرات المستهلكة",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w100,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "1200",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )),
         ),
       ],
     );
