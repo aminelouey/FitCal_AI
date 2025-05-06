@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "892464127931",
+    "project_id": "fitcal-ia",
+    "storage_bucket": "fitcal-ia.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892464127931:android:9bcdcd7495cfe4befcee9e",
+        "android_client_info": {
+          "package_name": "com.example.calosnap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZSVW2gu0LEJ0ubSuLD1NM6YlqMy9LdpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
