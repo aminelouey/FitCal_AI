@@ -69,6 +69,10 @@ class AnalysisScreen extends StatelessWidget {
           'assets/images/img1.jpg',
           fit: BoxFit.cover,
         ),
+        // Image.asset(
+        //   'assets/images/img1.jpg',
+        //   fit: BoxFit.cover,
+        // ),
       ),
     );
   }

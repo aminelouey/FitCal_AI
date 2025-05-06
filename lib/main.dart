@@ -59,7 +59,6 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const AnalysisScreen(),
-    const LastScanScreen(),
     const DailyJournalScreen(),
     const ProfileScreen(),
   ];
@@ -116,13 +115,13 @@ class _MainScreenState extends State<MainScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.calendar_today,
-                      color: _selectedIndex == 3
+                      color: _selectedIndex == 2
                           ? const Color(0xFF4CAF50)
                           : Colors.black,
                     ),
                     onPressed: () {
                       setState(() {
-                        _selectedIndex = 3;
+                        _selectedIndex = 2;
                       });
                     },
                   ),
@@ -135,13 +134,13 @@ class _MainScreenState extends State<MainScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.person,
-                      color: _selectedIndex == 4
+                      color: _selectedIndex == 3
                           ? const Color(0xFF4CAF50)
                           : Colors.black,
                     ),
                     onPressed: () {
                       setState(() {
-                        _selectedIndex = 4;
+                        _selectedIndex = 3;
                       });
                     },
                   ),

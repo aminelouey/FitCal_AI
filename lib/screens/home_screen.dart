@@ -1,11 +1,41 @@
+import 'dart:io';
+
+import 'package:fitcal_ai/camera/ImageDisplayScreen.dart';
+import 'package:fitcal_ai/camera/ImagePickerService.dart';
+import 'package:fitcal_ai/screens/analysis_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../widgets/macro_progress_bar.dart';
 import '../widgets/macro_info_card.dart';
 import 'last_scan_screen.dart';
 import 'profile_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final ImagePickerService _imagePickerService = ImagePickerService();
+  String? imagePath;
+
+  Future<void> _pickAndShowImage(ImageSource source) async {
+    final XFile? image = await _imagePickerService.pickImage(source);
+
+    if (image != null) {
+      setState(() {
+        imagePath = image.path;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LastScanScreen(imagePath: imagePath!),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +55,8 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 _buildDailySummary(),
                 const SizedBox(height: 24),
-                _buildLatestAnalysis(context),
+                _buildLatestAnalysis(
+                    context, imagePath ?? "assets/images/img1.jpg"),
               ],
             ),
           ),
@@ -101,7 +132,9 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            _pickAndShowImage(ImageSource.camera);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF4CAF50),
             foregroundColor: Colors.white,
@@ -121,7 +154,9 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            _pickAndShowImage(ImageSource.gallery);
+          },
           style: OutlinedButton.styleFrom(
             foregroundColor: const Color(0xFF4CAF50),
             side: const BorderSide(color: Color(0xFF4CAF50)),
@@ -213,7 +248,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLatestAnalysis(BuildContext context) {
+  Widget _buildLatestAnalysis(BuildContext context, String imagePath) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -242,11 +277,26 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 8),
         GestureDetector(
           onTap: () {
-            // Navigate to LastScanScreen
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const LastScanScreen()),
-            );
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LastScanScreen(imagePath: imagePath)));
           },
+
+          //     if (imagePath != null) {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //           builder: (context) => LastScanScreen(imagePath: imagePath)),
+          //     );
+          //   }else{
+          //      Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //         builder: (context) => LastScanScreen(imagePath: 'assets/images/img1.jpg'))
+
+          //   );
+          // }
+
           child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -262,14 +312,17 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.grey[300]!),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        'assets/images/img1.jpg',
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: imagePath != 'assets/images/img1.jpg'
+                          ? Image.file(
+                              File(imagePath),
+                              fit: BoxFit.fill,
+                            )
+                          : Image.asset(
+                              'assets/images/img1.jpg',
+                              fit: BoxFit.cover,
+                            ), // Affiche l'image par défaut
                     ),
                   ),
                   const SizedBox(height: 10),

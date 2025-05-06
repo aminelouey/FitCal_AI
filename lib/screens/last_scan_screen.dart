@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../widgets/nutrient_detail_card.dart';
 
+// ignore: must_be_immutable
 class LastScanScreen extends StatelessWidget {
-  const LastScanScreen({super.key});
+  String imagePath;
+  LastScanScreen({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +16,7 @@ class LastScanScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _buildImageSection(context),
+              _buildImageSection(imagePath, context),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -35,15 +39,30 @@ class LastScanScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildImageSection(BuildContext context) {
+  Widget _buildImageSection(String imagePath, BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          'assets/images/img1.jpg',
-          height: 250,
-          width: double.infinity,
-          fit: BoxFit.cover,
-        ),
+        if (imagePath == "assets/images/img1.jpg")
+          Image.asset(
+            'assets/images/img1.jpg',
+            height: 250,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          )
+        else
+          Image.file(File(imagePath)),
+
+        // if (imagePath == "assets/images/img1.jpg"){
+        //   Image.asset(
+        //     'assets/images/img1.jpg',
+        //     height: 250,
+        //     width: double.infinity,
+        //     fit: BoxFit.cover,
+        //   ),
+        // }
+        // else{
+        //   Image.network(imagePath)
+        // }
         Positioned(
           top: 16,
           left: 16,
