@@ -1,3 +1,4 @@
+import 'package:fitcal_ai/Firebase/auth_service.dart';
 import 'package:fitcal_ai/main.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
@@ -11,6 +12,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _authService = AuthService();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -18,6 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
   final _ageController = TextEditingController();
+  bool _isLoading = false;
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
@@ -395,22 +398,40 @@ class _SignupScreenState extends State<SignupScreen> {
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate() && _agreeToTerms) {
-            // Simuler une inscription réussie
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MainScreen()),
-            );
-          } else if (!_agreeToTerms) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('يجب الموافقة على الشروط والأحكام'),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        },
+        onPressed: _isLoading
+            ? null
+            : () async {
+                if (_formKey.currentState!.validate() && _agreeToTerms) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  // Dans la méthode _signUp()
+                  try {
+                    await _authService.signUp(
+                      _emailController.text,
+                      _passwordController.text,
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } finally {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                } else if (!_agreeToTerms) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('يجب الموافقة على الشروط والأحكام'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF4CAF50),
           foregroundColor: Colors.white,
@@ -418,13 +439,15 @@ class _SignupScreenState extends State<SignupScreen> {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: const Text(
-          'إنشاء حساب',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: _isLoading
+            ? const CircularProgressIndicator(color: Colors.white)
+            : const Text(
+                'إنشاء حساب',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }

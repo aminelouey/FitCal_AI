@@ -1,4 +1,4 @@
-import 'package:fitcal_ai/screens/home_screen.dart';
+import 'package:fitcal_ai/Firebase/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'signup_screen.dart';
@@ -14,8 +14,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _authService = AuthService();
   bool _obscurePassword = true;
   bool _rememberMe = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -229,15 +231,45 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            // Simuler une connexion réussie
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MainScreen()),
-            );
-          }
-        },
+        onPressed: _isLoading
+            ? null
+            : () async {
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  try {
+                    await _authService.signIn(
+                      _emailController.text,
+                      _passwordController.text,
+                    );
+                  } catch (e) {
+                    String errorMessage =
+                        '  البريد الالكتوني أو كلمة المرور غير صحيحة  ';
+
+                    if (e.toString().contains('user-not-found')) {
+                      errorMessage = 'البريد الإلكتروني غير مسجل';
+                    } else if (e.toString().contains('wrong-password')) {
+                      errorMessage = 'كلمة المرور غير صحيحة';
+                    } else if (e.toString().contains('invalid-email')) {
+                      errorMessage = 'البريد الإلكتروني غير صالح';
+                    } else if (e.toString().contains('user-disabled')) {
+                      errorMessage = 'هذا الحساب معطل';
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(errorMessage),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } finally {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                }
+              },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF4CAF50),
           foregroundColor: Colors.white,
@@ -245,13 +277,15 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: const Text(
-          'تسجيل الدخول',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: _isLoading
+            ? const CircularProgressIndicator(color: Colors.white)
+            : const Text(
+                'تسجيل الدخول',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }

@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitcal_ai/screens/home_screen.dart';
+import 'package:fitcal_ai/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -21,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 _buildStatsSection(),
                 const SizedBox(height: 24),
-                _buildSettingsSection(),
+                _buildSettingsSection(context),
               ],
             ),
           ),
@@ -190,7 +192,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsSection() {
+  Widget _buildSettingsSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -202,11 +204,12 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        _buildSettingItem(Icons.notifications_outlined, 'الإشعارات'),
-        _buildSettingItem(Icons.language_outlined, 'اللغة'),
-        _buildSettingItem(Icons.dark_mode_outlined, 'المظهر'),
-        _buildSettingItem(Icons.help_outline, 'المساعدة والدعم'),
-        _buildSettingItem(Icons.logout, 'تسجيل الخروج', isLogout: true),
+        _buildSettingItem(context, Icons.notifications_outlined, 'الإشعارات'),
+        _buildSettingItem(context, Icons.language_outlined, 'اللغة'),
+        _buildSettingItem(context, Icons.dark_mode_outlined, 'المظهر'),
+        _buildSettingItem(context, Icons.help_outline, 'المساعدة والدعم'),
+        _buildSettingItem(context, Icons.logout, 'تسجيل الخروج',
+            isLogout: true),
       ],
     );
   }
@@ -254,7 +257,24 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingItem(IconData icon, String title,
+  Future<void> _handleLogout(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('حدث خطأ أثناء تسجيل الخروج'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Widget _buildSettingItem(BuildContext context, IconData icon, String title,
       {bool isLogout = false}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -283,7 +303,11 @@ class ProfileScreen extends StatelessWidget {
           icon,
           color: isLogout ? Colors.red : Colors.grey[700],
         ),
-        onTap: () {},
+        onTap: () {
+          if (isLogout) {
+            _handleLogout(context);
+          }
+        },
       ),
     );
   }

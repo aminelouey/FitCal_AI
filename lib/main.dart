@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitcal_ai/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -6,7 +7,6 @@ import 'screens/home_screen.dart';
 import 'screens/analysis_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/daily_journal_screen.dart';
-import 'screens/last_scan_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +41,20 @@ class MyApp extends StatelessWidget {
         Locale('en', ''),
       ],
       locale: const Locale('ar', ''),
-      home: const LoginScreen(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasData) {
+            return const MainScreen();
+          }
+
+          return const LoginScreen();
+        },
+      ),
     );
   }
 }
